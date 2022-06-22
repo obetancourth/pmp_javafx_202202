@@ -267,7 +267,7 @@
       </VBox>
       <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" />
+            <ListView fx:id="lstOperaciones" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" style="-fx-alignment: center-right;" />
          </children>
       </Pane>
    </children>

@@ -6,12 +6,15 @@ package com.pmp.fx101;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.collections.FXCollections;
 /**
  * FXML Controller class
  *
@@ -66,6 +69,8 @@ public class CalculadoraController implements Initializable {
     private Label lblCurrentOperation;
     @FXML
     private Label lblOperand;
+    @FXML
+    private ListView<String> lstOperaciones;
     /**
      * Initializes the controller class.
      */
@@ -73,6 +78,7 @@ public class CalculadoraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         txtDisplay.setText(valueToProcess);
+        lstOperaciones.setItems(FXCollections.observableArrayList(operationsToDisplay));
     }    
     
     private String valueToProcess = "";
@@ -80,7 +86,7 @@ public class CalculadoraController implements Initializable {
     private float operand = 0;
     private String operation = "";
     private boolean clearNext = false;
-    
+    private ArrayList<String> operationsToDisplay = new ArrayList();
     @FXML
     private void btnOnClicked(ActionEvent event) {
         Button btnClicked = (Button) event.getSource();
@@ -109,6 +115,7 @@ public class CalculadoraController implements Initializable {
                 }
                 break;
             case "btnClear":
+                operationsToDisplay.add("C-----------------");
                 valueToProcess = "";
                 dotPending = false;
                 operand = 0;
@@ -118,8 +125,10 @@ public class CalculadoraController implements Initializable {
                 if (operation == "") {
                     operand = (valueToProcess.isEmpty()) ? 0 : Float.parseFloat(valueToProcess);
                     operation = btnClicked.getText();
+                    operationsToDisplay.add(String.valueOf(operand)+ "  ");
                 } else {
                     float tmpOperand = (valueToProcess.isEmpty()) ? 0 : Float.parseFloat(valueToProcess);
+                    operationsToDisplay.add(String.valueOf(tmpOperand) + " " + operation);
                     switch (operation) {
                         case "+":
                             operand = operand + tmpOperand;
@@ -144,6 +153,7 @@ public class CalculadoraController implements Initializable {
                         operation = "";
                     }
                     valueToProcess = String.valueOf(operand);
+                    operationsToDisplay.add(String.valueOf(operand) + " =");
                 }
                 lblCurrentOperation.setText(operation);
                 lblOperand.setText(String.valueOf(operand));
@@ -151,5 +161,9 @@ public class CalculadoraController implements Initializable {
                 break;
         }
         txtDisplay.setText(valueToProcess);
+        if (operationsToDisplay.size()>0){
+            lstOperaciones.setItems(FXCollections.observableArrayList(operationsToDisplay));
+            lstOperaciones.scrollTo(operationsToDisplay.size()-1);
+        }
     }
 }
